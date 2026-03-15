@@ -1,0 +1,77 @@
+---
+title: "Data 607 HTML & JSON"
+format: html
+editor: visual
+---
+
+**Assignment Overview**
+
+For this assignment, I created a small dataset of three books related to uncertainty, prediction and decision making. The books I picked are:
+
+\- The Black Swan: The Impact of the Highly Improbable by Nassim Nicholas Taleb
+
+\- Superforecasting: The Art and Science of Prediction by Philip E. Tetlock and Dan Gardner
+
+\- Thinking, Fast and Slow by Daniel Kahneman
+
+These books all explore how humans understand randomness, risk, probability, and forecasting.
+
+For each book, I recorded the following:
+
+\- Title
+
+\- Authors
+
+\- Publication Year
+
+\- Publisher
+
+\- Genre
+
+I manually created the dataset in two formats:
+
+1\. HTML using a table structure
+
+2\. JSON using key value pairs
+
+**Loading Libraries**
+
+```{r}
+library(rvest)
+
+library(jsonlite)
+```
+
+**Loading HTML data**
+
+```{r}
+html_page <- read_html("books.html")
+
+html_df <- html_page |>
+  html_element("table") |>
+  html_table()
+
+html_df
+```
+
+**Loading JSON data**
+
+```{r}
+json_raw <- fromJSON("books.json")
+
+json_df <- json_raw$books
+
+json_df
+```
+
+**Comparing data sets**
+
+```{r}
+html_df <- as.data.frame(html_df)
+json_df <- as.data.frame(json_df)
+
+identical(html_df, json_df)
+all.equal(html_df, json_df)
+```
+
+While testing the comparison, I had to adjust the JSON file a few times so that the values and structure matched the HTML data exactly. After converting both objects to standard data frames and making those corrections, the comparison confirmed that the two datasets were identical.
